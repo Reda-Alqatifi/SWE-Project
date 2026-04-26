@@ -1,0 +1,43 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36">
+  <diagram name="Page-1" id="HCXH5Wirz9g683Njk2Ux">
+    <mxGraphModel dx="1083" dy="668" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" value="«system»&lt;div&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Library and Bookstore Management System&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="140" x="355" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" value="«system»&lt;div&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Registration and Log in System&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="100" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" value="«system»&lt;div&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Inventory Management System&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="100" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" value="«system»&lt;div&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Reporting Management System&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="610" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" value="«system»&lt;div&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Transaction Management System&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="610" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" value="«system»&lt;div&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;User Management System&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="140" x="355" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-7" edge="1" parent="1" source="HadEPE9LJY9dci8DNCZJ-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.025;entryY=0.49;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" target="HadEPE9LJY9dci8DNCZJ-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-8" edge="1" parent="1" source="HadEPE9LJY9dci8DNCZJ-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.001;entryY=0.511;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" target="HadEPE9LJY9dci8DNCZJ-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-9" edge="1" parent="1" source="HadEPE9LJY9dci8DNCZJ-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.502;entryY=1.027;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" target="HadEPE9LJY9dci8DNCZJ-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-10" edge="1" parent="1" source="HadEPE9LJY9dci8DNCZJ-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.02;entryY=0.449;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" target="HadEPE9LJY9dci8DNCZJ-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HadEPE9LJY9dci8DNCZJ-11" edge="1" parent="1" source="HadEPE9LJY9dci8DNCZJ-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.006;entryY=0.517;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;" target="HadEPE9LJY9dci8DNCZJ-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
