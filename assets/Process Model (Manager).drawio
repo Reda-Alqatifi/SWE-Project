@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="HCXH5Wirz9g683Njk2Ux">
-        <mxGraphModel dx="5877" dy="3400" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+        <mxGraphModel dx="754" dy="510" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#FFFFFF" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -581,48 +581,15 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-403" value="Back to the Registration menu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="-10.000000000000071" y="1270" width="120" height="40" as="geometry"/>
-                </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-404" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.506;entryY=-0.02;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.492;exitY=0.981;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="WD_8mha43zlkJq-gnu8U-64" target="WD_8mha43zlkJq-gnu8U-403" edge="1">
+                <mxCell id="WD_8mha43zlkJq-gnu8U-405" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.579;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.515;exitY=0.999;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="WD_8mha43zlkJq-gnu8U-84" target="WD_8mha43zlkJq-gnu8U-4" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
-                            <mxPoint x="1277" y="1242"/>
-                            <mxPoint x="50.99999999999993" y="1242"/>
+                            <mxPoint x="299" y="1370"/>
+                            <mxPoint x="180" y="1370"/>
+                            <mxPoint x="180" y="343"/>
                         </Array>
-                        <mxPoint x="1277" y="1217" as="sourcePoint"/>
-                        <mxPoint x="119.95999999999998" y="1268" as="targetPoint"/>
+                        <mxPoint x="50" y="1310" as="sourcePoint"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-405" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.579;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="WD_8mha43zlkJq-gnu8U-403" target="WD_8mha43zlkJq-gnu8U-4" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="50" y="1370"/>
-                            <mxPoint x="-100" y="1370"/>
-                            <mxPoint x="-100" y="343"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-406" value="" style="group" parent="1" connectable="0" vertex="1">
-                    <mxGeometry x="275.99999999999994" y="1350" width="44.57142857142874" height="44.57142857142867" as="geometry"/>
-                </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-407" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=none;" parent="WD_8mha43zlkJq-gnu8U-406" vertex="1">
-                    <mxGeometry width="44.57142857142857" height="44.57142857142857" as="geometry"/>
-                </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-408" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="WD_8mha43zlkJq-gnu8U-406" vertex="1">
-                    <mxGeometry x="5.570000000000164" y="5.569999999999936" width="33.42857142857143" height="33.42857142857143" as="geometry"/>
-                </mxCell>
-                <mxCell id="WD_8mha43zlkJq-gnu8U-409" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.517;exitY=1.011;exitDx=0;exitDy=0;exitPerimeter=0;" parent="WD_8mha43zlkJq-gnu8U-406" source="WD_8mha43zlkJq-gnu8U-84" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="21.281235955056218" y="-40" as="sourcePoint"/>
-                        <mxPoint x="23.269999999999982" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="6" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=default;" vertex="1" parent="WD_8mha43zlkJq-gnu8U-406">
-                    <mxGeometry x="1.7053025658242404e-13" y="-2.2737367544323206e-13" width="44.57142857142857" height="44.57142857142857" as="geometry"/>
-                </mxCell>
-                <mxCell id="7" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="WD_8mha43zlkJq-gnu8U-406">
-                    <mxGeometry x="5.570000000000107" y="5.569999999999936" width="33.42857142857143" height="33.42857142857143" as="geometry"/>
                 </mxCell>
                 <mxCell id="WD_8mha43zlkJq-gnu8U-412" value="" style="rhombus;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="2396" y="1359" width="40" height="40" as="geometry"/>
@@ -880,14 +847,14 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=default;" vertex="1" parent="1">
+                <mxCell id="2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=default;" parent="1" vertex="1">
                     <mxGeometry x="1252.93" y="575.68" width="44.57142857142857" height="44.57142857142857" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+                <mxCell id="3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" parent="1" vertex="1">
                     <mxGeometry x="1258.5" y="581.25" width="33.42857142857143" height="33.42857142857143" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=light-dark(default, #ffffff);" vertex="1" parent="1">
-                    <mxGeometry x="-180" y="10" width="3070" height="1990" as="geometry"/>
+                <mxCell id="9" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=light-dark(default, #ffffff);" parent="1" vertex="1">
+                    <mxGeometry x="100" width="2810" height="2020" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
