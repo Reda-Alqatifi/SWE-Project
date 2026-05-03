@@ -25,7 +25,6 @@ class ManagerOperations;
 
 
 //! GeneralFunctions struct, it is a struc that contains a very helpful functions
-
 struct GeneralFunctions
 {
     //! Handeling Errors function - (not same data type imput)
@@ -84,6 +83,184 @@ struct GeneralFunctions
     }
 };
 
+//! Pointers_Handling class, it is a class that contains a very helpful functions for poniters
+class Pointers_Handling
+{
+    public:
+
+        //! Search a pointer list for a User* by email.
+        template<typename T>
+        T* findByEmail(list<T*> &lst, const string &email)
+        {
+            for (T* ptr : lst)
+            {
+                if (ptr != nullptr && ptr->get_email() == email)
+                    return ptr;
+            }
+            return nullptr;
+        }
+
+        //! Check whether a given email already exists in a pointer list.
+        template<typename T>
+        bool emailExists(list<T*> &lst, const string &email)
+        {
+            return findByEmail(lst, email) != nullptr;
+        }
+
+        //! Remove (and delete) an element from a pointer list by email.
+        template<typename T>
+        bool removeByEmail(list<T*> &lst, const string &email)
+        {
+            for (auto temp = lst.begin(); temp != lst.end(); ++temp)
+            {
+                if (*temp != nullptr && (*temp)->get_email() == email)
+                {
+                    delete temp;
+                    lst.erase(temp);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //! Add a pointer to a list only if no element with the same email exists.
+        template<typename T>
+        bool addUserInList(list<T*> &lst, T* newPtr)
+        {
+            if (newPtr == nullptr) 
+                return false;
+            if (emailExists(lst, newPtr->get_email()))
+                return false;
+            lst.push_back(newPtr);
+
+            return true;
+        }
+
+        //! Free every pointer in a list and clear it.
+        template<typename T>
+        void freeList(list<T*> &lst)
+        {
+            for (T* ptr : lst)
+                delete ptr;
+            lst.clear();
+        }
+
+        //! Print all Users in a list
+
+        template<typename T>
+        void printUsers(list<T*> &lst)
+        {
+            if (lst.empty())
+            {
+                cout << "\n> No users found in this list.\n" << endl;
+                return;
+            }
+
+            for (T* ptr : lst)
+            {
+                if (ptr == nullptr) 
+                    continue;
+                cout << left
+                    << setw(20)  << (ptr->get_name().length() > 20 ? 
+                    ptr->get_name().substr(0, 17) + "..." : ptr->get_name())
+                    << setw(4) << ptr->get_age()
+                    << setw(30) << (ptr->get_email().length() > 20 ? 
+                    ptr->get_email().substr(0, 17) + "..." : ptr->get_email());
+
+                    cout << endl;
+            }
+        }
+
+
+        /////////////////////////////////
+
+
+        //! Search a Books pointer list by code
+        template<typename T>
+        T* findByCode(list<T*> &lst, int code)
+        {
+            for (T* ptr : lst)
+            {
+                if (ptr != nullptr && ptr->get_code() == code)
+                    return ptr;
+            }
+            return nullptr;
+        }
+    
+        //! Search a Books pointer list by title
+        template<typename T>
+        T* findByTitle(list<T*> &lst, const string &title)
+        {
+            for (T* ptr : lst)
+            {
+                if (ptr != nullptr && ptr->get_title() == title)
+                    return ptr;
+            }
+            return nullptr;
+        }
+    
+        //! Check whether a book with the given code already exists in the list.
+        template<typename T>
+        bool codeExists(list<T*> &lst, int code)
+        {
+            return findByCode(lst, code) != nullptr;
+        }
+    
+        //! Add a Books* to a list only if no book with the same code exists.
+        template<typename T>
+        bool addBookInList(list<T*> &lst, T* newPtr)
+        {
+            if (newPtr == nullptr) 
+                return false;
+            if (codeExists(lst, newPtr->get_code()))
+                return false;
+            lst.push_back(newPtr);
+
+            return true;
+        }
+    
+        //! Remove a book from a pointer list by code.
+        template<typename T>
+        bool removeByCode(list<T*> &lst, int code)
+        {
+            for (auto temp = lst.begin(); temp != lst.end(); ++temp)
+            {
+                if (*temp != nullptr && (*temp)->get_code() == code)
+                {
+                    delete *temp;
+                    lst.erase(temp);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //! Print all books in a list
+        template<typename T>
+        void printBooks(list<T*> &lst)
+        {
+            if (lst.empty())
+            {
+                cout << "\n> No books found in this list.\n" << endl;
+                return;
+            }
+
+            for (T* ptr : lst)
+            {
+                if (ptr == nullptr) 
+                    continue;
+                cout << left
+                    << setw(10)  << ptr->get_code()
+                    << setw(20) << (ptr->get_title().length() > 20 ? 
+                    ptr->get_title().substr(0, 17) + "..." : ptr->get_title())
+                    << setw(20) << (ptr->get_author().length() > 20 ? 
+                    ptr->get_author().substr(0, 17) + "..." : ptr->get_author())
+                    << setw(15) << ptr->get_section()
+                    << setw(10) << fixed << setprecision(2) << ptr->get_price() << endl;
+            }
+        }
+};
+
 ///////////////////////
 
 //! Globa Variables / Objects:
@@ -92,14 +269,15 @@ int EMP_key_code = 999;
 int MNG_key_code = 777;
 
 GeneralFunctions general;
+Pointers_Handling pointers;
 
-list<User> users;
+list<User*> users;
 
-list<Customer> customers;
+list<Customer*> customers;
 
-list<Employee> employees;
+list<Employee*> employees;
 
-list<Manager> managers;
+list<Manager*> managers;
 
 ///////////////////////
 
@@ -118,6 +296,11 @@ class Books
         double price;
     
     public:
+        //! Virtual destructor
+        virtual ~Books()
+        {
+
+        }
 
         //! Setters:
         void set_title(string title)
@@ -190,11 +373,19 @@ class BorrowedBooks : public Books
 class BooksPublicOperations 
 {
     protected:
-        list<Books> B;
-        list<BorrowedBooks> B_borrowed;
-        list<PurchasedBooks> B_purchased;
+        list<Books*> B;
+        list<BorrowedBooks*> B_borrowed;
+        list<PurchasedBooks*> B_purchased;
 
     public:
+        //! virtual Destructor to destroy all books
+        virtual ~BooksPublicOperations()
+        {
+            pointers.freeList(B_borrowed);
+            pointers.freeList(B_purchased);
+            pointers.freeList(B);
+        }
+
         void browseBooks()
         {
 
@@ -433,69 +624,6 @@ class EmployeeOperations : public BooksPublicOperations
 
             } while (choice != 3);
         }
-
-        void menu()
-        {
-            cout<<endl;
-            general.printLine(60 , '=');
-            cout<<"|"<<general.centerText("Employee Menu", 58)<<"|"<<endl;
-            general.printLine(60 , '-');
-
-            cout<<"| "<<setw(57)<<left<<"1 - Browse Books."<<"|"<<endl;
-            cout<<"| "<<setw(57)<<left<<"2 - Search Books."<<"|"<<endl;
-            cout<<"| "<<setw(57)<<left<<"3 - Manage Books."<<"|"<<endl;
-            cout<<"| "<<setw(57)<<left<<"4 - Veiw Customers Info."<<"|"<<endl;
-            cout<<"| "<<setw(57)<<left<<"5 - Log out."<<"|"<<endl;
-
-            general.printLine(60 , '=');
-
-            /////////////////////////////////////
-
-            cout<<"\n> Enter your choice : ";
-        }
-        void EMPMenuChoice() //! Every operations related to Employee
-        {
-            int choice = 0;
-
-            do
-            {
-                menu();
-                cin>>choice;
-
-                general.handleErrors(choice);
-
-                switch (choice)
-                {
-                    case 1: //! Browse Books
-                        browseBooks();
-                        break;
-                    
-                    case 2: //! Search Books
-                        searchBooksMenuChoice();
-                        break;
-                    
-                    case 3: //! Manage Books
-                        manageBooksMenuChoice();
-                        break;
-
-                    case 4: //! Veiw Customers Info
-                        browseCustomersData();
-                        break;
-
-                    case 5: //! Log out
-                        general.printLine(50 , '-');
-                        return;
-
-                    default:
-                        cout<<"\n* Wrong Entry! please try again!\n"<<endl;
-                        break;
-                }
-
-                general.printLine(50 , '-'); //! print a Line between each option
-
-            } while (choice != 3);
-            
-        }
 };
 
 ////////////////////////
@@ -506,9 +634,6 @@ class CustomerOperations : public BooksPublicOperations
 {
     private:
         string returnDate;
-        
-        list<PurchasedBooks> purchasedList;
-        list<BorrowedBooks> borrowedList;
 
     public:
         void assignDate(string returndate)
@@ -531,7 +656,7 @@ class CustomerOperations : public BooksPublicOperations
 
         }
 
-        void returnBook(BorrowedBooks B)
+        void returnBook()
         {
 
         }
@@ -566,6 +691,11 @@ class User {
         string password;
 
     public:
+        //! Virtual destructor
+        virtual ~User()
+        {
+
+        }
 
         //! setters
         void set_name(string name)
@@ -626,22 +756,18 @@ class User {
                 cin >> TempEmail;
                 exist = false;
 
-                for (auto &u : users)
+
+                if(pointers.emailExists(users, TempEmail)) // if the user email is already in the list
                 {
-                    if(TempEmail == u.email) // if the user email is already in the list
-                    {
-                        cout << "\nThis Email is already Exist!" << endl;
-                        cout << "Pleaes, Try Again!" << endl;
-                        exist = true;
-                        break;
-                    }
+                    cout << "\nThis Email is already Exist!" << endl;
+                    cout << "Pleaes, Try Again!" << endl;
+                    exist = true;
                 }
+
             }
             
-            if(!exist) //! if the input is uniqe 
-            {
-                this->email = TempEmail;
-            }
+            //! if the input is uniqe 
+            this->email = TempEmail;
         }
         void register_password()
         {
@@ -667,13 +793,14 @@ class User {
             register_email();
             register_password();
 
-            users.push_back(*this); //! to insert the entire object into the list
+            User* newUser = new User(*this);
+            users.push_back(newUser); //! to insert the entire object(pointer) into the list
         } 
 
-        void logout()
+        bool logout()
         {
             cout << "\n >>> You had logged out successfully! \n" << endl;
-            return;
+            return true;
         }
 
     protected:
@@ -690,11 +817,9 @@ class User {
                 if (TempEmail == "-1") //! to leave
                     return "-1";
 
-                for (auto &u : users)
-                {
-                    if(TempEmail == u.get_email()) // if the user email is already in the list
-                        return TempEmail;
-                }
+                // if the user email is already in the list
+                if(pointers.findByEmail(users, TempEmail) != nullptr) 
+                    return TempEmail;
 
                 //! if not exist
                 cout << "\nThis Email is not Exist!" << endl;
@@ -705,34 +830,26 @@ class User {
         bool checkpasswrd(string tempEmail)
         {
             //! Password
+            User* foundUser = pointers.findByEmail(users, tempEmail);
+            if (foundUser == nullptr) 
+                return false;
+
             string TempPassword;
-            for (auto &u : users)
+            for (int attempt = 0 ; attempt < 3 ; attempt++)
             {
-                if(u.get_email() == tempEmail)
-                {
-                    for (int attempt = 0 ; attempt < 3 ; attempt++)
-                    {
-                        cout << "> Enter Your Password (Enter '-1' to leave): ";
-                        cin >> TempPassword;
-                        
-                        if (TempPassword == "-1")
-                            return false;
-
-                        //! if valid
-                        if (TempPassword == u.get_password())
-                        {
-                            return true;
-                        }
-
-                        //! if not valid
-                        cout << "\nThis Password is not correct!" << endl;
-                        cout << "Pleaes, Try Again!" << endl;
-                    }
-
+                cout << "> Enter Your Password (Enter '-1' to leave): ";
+                cin >> TempPassword;
+                
+                if (TempPassword == "-1")
                     return false;
-                }
+
+                if (TempPassword == foundUser->get_password())
+                    return true;
+
+                //! if not valid
+                cout << "\nThis Password is not correct!" << endl;
+                cout << "Please, Try Again!" << endl;
             }
-            
             return false;
         }
 
@@ -750,61 +867,71 @@ class Customer : public User {
     private:
         CustomerOperations CustomerOp;
         
-        list<PurchasedBooks> customerPurchasedBooks;
-        list<BorrowedBooks> customerBorrowedBooks;
+        list<PurchasedBooks*> customerPurchasedBooks;
+        list<BorrowedBooks*> customerBorrowedBooks;
 
     public:
         //! add books to customers inventory
-        void add_Purchased(PurchasedBooks book)
+        void add_Purchased(PurchasedBooks* book)
         {
-            this->customerPurchasedBooks.push_back(book);
+            pointers.addBookInList(customerPurchasedBooks, book);
         }
-        void add_Borrowed(BorrowedBooks book)
+        void add_Borrowed(BorrowedBooks* book)
         {
-            customerBorrowedBooks.push_back(book);
+            pointers.addBookInList(customerBorrowedBooks, book);
+        }
+
+        //! Remove books from customer's inventory
+        void remove_Purchased(int code)
+        {
+            pointers.removeByCode(customerPurchasedBooks, code);
+        }
+        void remove_Borrowed(int code)
+        {
+            pointers.removeByCode(customerBorrowedBooks, code);
+        }
+
+        //! virual destructor to destroy the customer with his books
+        virtual ~Customer()
+        {
+            pointers.freeList(customerPurchasedBooks);
+            pointers.freeList(customerBorrowedBooks);
         }
 
         bool login() override
         {
             string tempEmail = check_getEmail();
+            if (tempEmail == "-1") 
+                return false;
+            if (!checkpasswrd(tempEmail)) 
+                return false;
 
-            if (tempEmail != "-1" && checkpasswrd(tempEmail))
+            //! Find the User in the list
+            User* foundUser = pointers.findByEmail(users, tempEmail);
+            if (foundUser == nullptr) 
+                return false;
+
+            this->set_name(foundUser->get_name());
+            this->set_age(foundUser->get_age());
+            this->set_email(foundUser->get_email());
+            this->set_password(foundUser->get_password());
+
+            //! Check if this customer is already in the list
+            Customer* exist = pointers.findByEmail(customers, tempEmail);
+            if (exist != nullptr)
             {
-                for (auto &u : users)
-                {
-                    if (tempEmail == u.get_email())
-                    {
-                        bool inList = false;
-                        Customer tempC;
-                        for (auto &c : customers)
-                        {
-                            if (c.get_email() == u.get_email())
-                            {
-                                tempC = c;
-                                inList = true;
-                                break;
-                            }
-                        }
-
-                        this->set_name(u.get_name());
-                        this->set_age(u.get_age());
-                        this->set_email(u.get_email());
-                        this->set_password(u.get_password());
-
-                        if (inList)
-                        {
-                            this->customerPurchasedBooks = tempC.customerPurchasedBooks;
-                            this->customerBorrowedBooks = tempC.customerBorrowedBooks;
-                        }
-                        if (!inList)
-                            customers.push_back(*this);
-
-                        return true;
-                    }
-                }
+                //! Restore his saved book lists
+                this->customerPurchasedBooks = exist->customerPurchasedBooks;
+                this->customerBorrowedBooks  = exist->customerBorrowedBooks;
             }
-            
-            return false;
+            else
+            {
+                //! if he is not in the list
+                Customer* newCustomer = new Customer(*this);
+                customers.push_back(newCustomer);
+            }
+
+            return true;
         }
 
         ////////////////////
@@ -845,23 +972,23 @@ class Customer : public User {
                 switch (choice)
                 {
                     case 1: //! Browse Books
-                        
+                        CustomerOp.browseBooksMenuChoice("customer");
                         break;
                     
                     case 2: //! Search Books
-                        
+                        CustomerOp.searchBooksMenuChoice();
                         break;
                     
                     case 3: //! Borrow a Book
-                        
+                        CustomerOp.borrow();
                         break;
 
                     case 4: //! Purchase a Book
-                        
+                        CustomerOp.purchase();
                         break;
 
                     case 5: //! return a Book
-                        
+                        CustomerOp.returnBook();
                         break;
 
                     case 6: //! Log out
@@ -889,6 +1016,12 @@ class Employee : public User {
         double salary = 2500;
 
     public:
+        //! virtual destructor
+        virtual ~Employee()
+        {
+            
+        }
+
         bool set_salary(double salary)
         {
             if (salary > 2000 && salary < 1000000)
@@ -899,81 +1032,69 @@ class Employee : public User {
 
             return false;    
         }
+        double get_salary()
+        {
+            return this->salary;
+        }
 
         //! caller is employee or manager
         bool checkKey_Code(const string &caller)
         {
-            int attempt;
-            for (attempt = 0 ; attempt < 3 ; attempt++)
+            for (int attempt = 0 ; attempt < 3 ; attempt++)
             {
                 int tempCode;
                 cout << "> Enter the Key_Code (Enter '-1' to leave): ";
                 cin >> tempCode;
-
                 general.handleErrors(tempCode);
 
-                if (tempCode == -1)
+                if (tempCode == -1) 
                     return false;
 
-                if (caller == "manager")
+                if (caller == "manager" && tempCode == MNG_key_code)
                 {
-                    if (tempCode == MNG_key_code)
-                    {
-                        cout << "\n >> You had Loged in successfully!\n" << endl;
-                        return true;
-                    }
+                    cout << "\n >> You had Logged in successfully!\n" << endl;
+                    return true;
                 }
-                else
+                else if (caller != "manager" && tempCode == EMP_key_code)
                 {
-                    if (tempCode == EMP_key_code)
-                    {
-                        cout << "\n >> You had Loged in successfully!\n" << endl;
-                        return true;
-                    }
+                    cout << "\n >> You had Logged in successfully!\n" << endl;
+                    return true;
                 }
-                
-                //! if not valid
-                cout << "\nThis key_Code is not correct!" << endl;
-                cout << "Pleaes, Try Again!" << endl;
-            }
 
+                cout << "\nThis Key_Code is not correct!" << endl;
+                cout << "Please, Try Again!" << endl;
+            }
             return false;
         }
         
         bool login(const string &caller)
         {
             string tempEmail = check_getEmail();
+            if (tempEmail == "-1") 
+                return false;
+            if (!checkpasswrd(tempEmail)) 
+                return false;
+            if (!checkKey_Code(caller)) 
+                return false;
 
-            if (tempEmail != "-1" && checkpasswrd(tempEmail) && checkKey_Code(caller))
+            //! Find the User in the list
+            User* foundUser = pointers.findByEmail(users, tempEmail);
+            if (foundUser == nullptr) 
+                return false;
+
+            this->set_name(foundUser->get_name());
+            this->set_age(foundUser->get_age());
+            this->set_email(foundUser->get_email());
+            this->set_password(foundUser->get_password());
+
+            //! if he is not already in the list
+            if (pointers.findByEmail(employees, tempEmail) == nullptr)
             {
-                for (auto &u : users)
-                {
-                    if (tempEmail == u.get_email())
-                    {
-                        bool inList = false;
-                        for (auto &e : employees)
-                        {
-                            if (e.get_email() == u.get_email())
-                            {
-                                inList = true;
-                                break;
-                            }
-                        }
-
-                        this->set_name(u.get_name());
-                        this->set_age(u.get_age());
-                        this->set_email(u.get_email());
-                        this->set_password(u.get_password());
-
-                        if (!inList)
-                            employees.push_back(*this);
-
-                        return true;
-                    }
-                }
+                Employee* newEmployee = new Employee(*this);
+                employees.push_back(newEmployee);
             }
-            
-            return false;
+
+            return true;
         }
 
         ////////////////////
@@ -1007,7 +1128,6 @@ class Employee : public User {
 
             cout<<"\n> Enter your choice : ";
         }
-        //! caller is employee or manager
         void employeeMenuChoice()
         {
             int choice = 0;
@@ -1061,27 +1181,26 @@ class Manager : public Employee {
         ManagerOperations managerOp;
 
     public:
+        //! virtual destructor
+        virtual ~Manager()
+        {
+
+        }
+
         bool Mnglogin()
         {
-            if (login("manager"))
+            if (!login("manager")) 
+                return false;
+
+            //! if he is not already in the list
+            if (pointers.findByEmail(managers, this->get_email()) == nullptr)
             {
-                bool inList = false;
-                for (auto &m : managers)
-                {
-                    if (m.get_email() == this->get_email())
-                    {
-                        inList = true;
-                        break;
-                    }
-                }
-
-                if (!inList)
-                    managers.push_back(*this);
-
-                return true;
+                Manager* newManager = new Manager(*this);
+                newManager->set_salary(30000);
+                managers.push_back(newManager);
             }
 
-            return false;
+            return true;
         }
         void managerMenuChoice()
         {
@@ -1181,9 +1300,7 @@ class MainMenu
                 {
                     case 1: //! Customer
                         if (customer.login())
-                        { 
-                           customer.customerMenuChoice();
-                        }
+                            customer.customerMenuChoice();
                         else
                         {
                             general.printLine(50 , '-');
@@ -1193,9 +1310,7 @@ class MainMenu
                     
                     case 2: //! Employee
                         if (employee.login("employee"))
-                        { 
-                           employee.employeeMenuChoice();
-                        }
+                            employee.employeeMenuChoice();
                         else
                         {
                             general.printLine(50 , '-');
@@ -1205,9 +1320,7 @@ class MainMenu
                     
                     case 3: //! Manager
                         if (manager.Mnglogin())
-                        { 
-                           manager.managerMenuChoice();
-                        }
+                            manager.managerMenuChoice();
                         else
                         {
                             general.printLine(50 , '-');
@@ -1247,7 +1360,7 @@ class MainMenu
 
             cout<<"\n> Enter your choice : ";
         }
-        void mainMenuChoice() //! Every operations we gonna do in the program are here
+        void mainMenuChoice()
         {
             int choice = 0;
 
@@ -1321,7 +1434,11 @@ int main()
     ///////////////////
     
 
-
+    //! Free all Pointers
+    pointers.freeList(managers);
+    pointers.freeList(employees);
+    pointers.freeList(customers);
+    pointers.freeList(users);
 
 
 
