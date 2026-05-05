@@ -695,129 +695,25 @@ class EmployeeOperations : public BooksPublicOperations
 
 //! Customer Operations ===>  ____  Basim  ____
 
-class CustomerOperations : public BooksPublicOperations 
+void customerMenu()
 {
-    private:
-        string returnDate;
+    cout << endl;
+    general.printLine(60 , '=');
+    cout << "|" << general.centerText("Customer Menu", 58) << "|" << endl;
+    general.printLine(60 , '-');
 
-    public:
-       void assignDate(string returndate)
-    {
-        returnDate = returndate;
-    }
-        
-void borrow()
-{
-    if (!currentCustomer) return;
+    cout << "| " << setw(57) << left << "1 - Borrow Book." << "|" << endl;
+    cout << "| " << setw(57) << left << "2 - Purchase Book." << "|" << endl;
+    cout << "| " << setw(57) << left << "3 - Return Book." << "|" << endl;
+    cout << "| " << setw(57) << left << "4 - Print Receipt." << "|" << endl;
+    cout << "| " << setw(57) << left << "5 - Browse Books." << "|" << endl;
+    cout << "| " << setw(57) << left << "6 - Search Books." << "|" << endl;
+    cout << "| " << setw(57) << left << "7 - Back to Main Menu." << "|" << endl;
 
-    int code;
-    cout << "Enter Book Code:";
-    cin >> code;
+    general.printLine(60 , '=');
 
-    Books* book = pointers.findByCode(B, code);
-
-    if (!book)
-    {
-        cout << "book not found"<<'\n';
-        return;
-    }
-
-    BorrowedBooks* b = new BorrowedBooks();
-
-    b->set_title(book->get_title());
-    b->set_code(book->get_code());
-    b->set_author(book->get_author());
-    b->set_section(book->get_section());
-    b->set_price(book->get_price());
-
-    cout << "Enter return date:";
-    cin >> b->returnDate;
-
-    B_borrowed.push_back(b);
-    currentCustomer->add_Borrowed(b);
-
-    cout << "the book is borrowed successfully"<<'\n';
+    cout << "\n> Enter your choice: ";
 }
-
-void purchase()
-{
-    if (!currentCustomer) return;
-
-    int code;
-    cout << "Enter book Code to Purchase:";
-    cin >> code;
-
-    Books* book = pointers.findByCode(B, code);
-
-    if (!book)
-    {
-        cout << "\n Book not found"<<'\n';
-        return;
-    }
-
-    PurchasedBooks* purchased = new PurchasedBooks();
-
-    purchased->set_title(book->get_title());
-    purchased->set_code(book->get_code());
-    purchased->set_author(book->get_author());
-    purchased->set_section(book->get_section());
-    purchased->set_price(book->get_price());
-
-    currentCustomer->add_Purchased(purchased);
-
-    cout << "\n Book purchased successfully"<<'\n';
-
-    printReceipt();
-}
-   
-void printReceipt()
-{
-    if (!currentCustomer) return;
-
-    auto& books = currentCustomer->getPurchasedBooks();
-
-    if (books.empty())
-    {
-        cout << "\n no purchased books\n";
-        return;
-    }
-
-    cout << "\n========== RECEIPT ==========\n";
-
-    double total = 0;
-
-    for (auto book : books)
-    {
-        cout << book->get_title()
-             << " - " << book->get_price() << '\n';
-
-        total += book->get_price();
-    }
-
-    cout << "-----------------------------\n";
-    cout << "Total: " << total << '\n';
-    cout << "=============================\n";
-}
-
-   void returnBook()
-{
-    if (!currentCustomer) return;
-
-    int code;
-    cout << " Enter Book Code: ";
-    cin >> code;
-
-    if (pointers.removeByCode(B_borrowed, code))
-    {
-        currentCustomer->remove_Borrowed(code);
-        cout << "returned successfully\n";
-    }
-    else
-    {
-        cout << "book not found\n";
-    }
-}
-
 ////////////////////////
 
 //! Manager Operations  ===>  ____  Yazan  ____
