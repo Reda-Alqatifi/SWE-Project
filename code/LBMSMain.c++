@@ -466,6 +466,7 @@ class BooksPublicOperations
     {
         cout << book->get_title() << '\n';
 }
+}
         //////////////////////
 
         //TODO - Menus
