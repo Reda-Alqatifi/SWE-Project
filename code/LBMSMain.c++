@@ -386,29 +386,86 @@ class BooksPublicOperations
             pointers.freeList(B);
         }
 
+      
         void browseBooks()
         {
+    if (B.empty())
+    {
+        cout << "\nno books"<<'\n';
+        return;
+    }
 
-        }
-
+    for (Books* book : B)
+    {
+        cout << book->get_code() << " - "
+             << book->get_title() << '\n';
+    }
+}
         //! to chose by whitch way you want to search , caller is:  name  or code
         void searchBooks(const string &caller)
         {
+    if (caller == "code")
+    {
+        int code;
+        cout << "\n enter book code: ";
+        cin >> code;
 
+        for (Books* book : B)
+        {
+            if (book->get_code() == code)
+            {
+                cout << "found: " << book->get_title() << '\n';
+                return;
+            }
+        }
+        cout << "book not found"<<'\n';
+    }
+    else
+    {
+        string name;
+        cout << "\n enter book name: ";
+        cin >> name;
+
+        for (Books* book : B)
+        {
+            if (book->get_title() == name)
+            {
+                cout << "found: " << book->get_title() << '\n';
+                return;
+            }
+        }
+        cout << "book not found"<<'\n';
+    }
         }
 
         //! to chose who is the user , caller is:  customer  or employee
         void browseBorrowedBooks(const string &caller)
-        {
+    {
+    if (B_borrowed.empty())
+    {
+        cout << "\n no borrowed books"<<'\n';
+        return;
+    }
 
-        }
-
+    for (BorrowedBooks* book : B_borrowed)
+    {
+        cout << book->get_title() << '\n';
+    }
+}
         //! to chose who is the user , caller is:  customer  or employee
         void browsePurchasedBooks(const string &caller)
-        {
+{
+    if (B_purchased.empty())
+    {
+        cout << "\n no purchased books"<<'\n';
+        return;
+    }
 
-        }
-
+    for (PurchasedBooks* book : B_purchased)
+    
+    {
+        cout << book->get_title() << '\n';
+}
         //////////////////////
 
         //TODO - Menus
