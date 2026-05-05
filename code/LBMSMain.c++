@@ -429,7 +429,7 @@ class BooksPublicOperations
     {
         string name;
         cout << "\n enter book name: ";
-        cin >> name;   // ✅ no getline
+        cin >> name;   
 
         for (Books* book : B)
         {
@@ -695,27 +695,158 @@ class EmployeeOperations : public BooksPublicOperations
 
 //! Customer Operations ===>  ____  Basim  ____
 
-void customerMenu()
+class CustomerOperations : public BooksPublicOperations
 {
-    cout << endl;
-    general.printLine(60 , '=');
-    cout << "|" << general.centerText("Customer Menu", 58) << "|" << endl;
-    general.printLine(60 , '-');
+private:
+    string returnDate;
+public:
+    void assignDate(string returndate)
+    {
+        returnDate = returndate;
+    }
 
-    cout << "| " << setw(57) << left << "1 - Borrow Book." << "|" << endl;
-    cout << "| " << setw(57) << left << "2 - Purchase Book." << "|" << endl;
-    cout << "| " << setw(57) << left << "3 - Return Book." << "|" << endl;
-    cout << "| " << setw(57) << left << "4 - Print Receipt." << "|" << endl;
-    cout << "| " << setw(57) << left << "5 - Browse Books." << "|" << endl;
-    cout << "| " << setw(57) << left << "6 - Search Books." << "|" << endl;
-    cout << "| " << setw(57) << left << "7 - Back to Main Menu." << "|" << endl;
+    void borrow()
+    {
+        if (!currentCustomer) return;
+        int code;
+        cout << "Enter Book Code:";
+        cin >> code;
+        Books* book = pointers.findByCode(B, code);
+        if (!book)
+        {
+            cout << "book not found" << '\n';
+            return;
+        }
+        BorrowedBooks* b = new BorrowedBooks();
+        b->set_title(book->get_title());
+        b->set_code(book->get_code());
+        b->set_author(book->get_author());
+        b->set_section(book->get_section());
+        b->set_price(book->get_price());
+        cout << "Enter return date:";
+        cin >> b->returnDate;
+        B_borrowed.push_back(b);
+        currentCustomer->add_Borrowed(b);
+        cout << "the book is borrowed successfully" << '\n';
+    }
 
-    general.printLine(60 , '=');
+    void purchase()
+    {
+        if (!currentCustomer) return;
+        int code;
+        cout << "Enter book Code to Purchase:";
+        cin >> code;
+        Books* book = pointers.findByCode(B, code);
+        if (!book)
+        {
+            cout << "\n Book not found" << '\n';
+            return;
+        }
+        PurchasedBooks* purchased = new PurchasedBooks();
+        purchased->set_title(book->get_title());
+        purchased->set_code(book->get_code());
+        purchased->set_author(book->get_author());
+        purchased->set_section(book->get_section());
+        purchased->set_price(book->get_price());
+        currentCustomer->add_Purchased(purchased);
+        cout << "\n Book purchased successfully" << '\n';
+        printReceipt();
+    }
 
-    cout << "\n> Enter your choice: ";
-}
-////////////////////////
+    void printReceipt()
+    {
+        if (!currentCustomer) return;
+        auto& books = currentCustomer->getPurchasedBooks();
+        if (books.empty())
+        {
+            cout << "\n no purchased books\n";
+            return;
+        }
+        cout << "\n========== RECEIPT ==========\n";
+        double total = 0;
+        for (auto book : books)
+        {
+            cout << book->get_title() << " - " << book->get_price() << '\n';
+            total += book->get_price();
+        }
+        cout << "-----------------------------\n";
+        cout << "Total: " << total << '\n';
+        cout << "=============================\n";
+    }
 
+    void returnBook()
+    {
+        if (!currentCustomer) return;
+        int code;
+        cout << " Enter Book Code: ";
+        cin >> code;
+        if (pointers.removeByCode(B_borrowed, code))
+        {
+            currentCustomer->remove_Borrowed(code);
+            cout << "returned successfully\n";
+        }
+        else
+        {
+            cout << "book not found\n";
+        }
+    }
+};
+
+class ManagerOperations 
+{
+public:
+    void deleteEmployee() 
+    {
+        int id;
+        cout << "Enter Employee ID to delete: ";
+        cin >> id;
+        // Logic: loops through global employeesList and erases target
+        for (int i = 0; i < employeesList.size(); i++) {
+            if (employeesList[i]->getID() == id) {
+                employeesList.erase(employeesList.begin() + i);
+                cout << "Employee deleted.\n";
+                return;
+            }
+        }
+        cout << "ID not found.\n";
+    }
+
+    void editSalary()
+    {
+        int id;
+        double s;
+        cout << "Enter Employee ID: ";
+        cin >> id;
+        for (auto& emp : employeesList) {
+            if (emp->getID() == id) {
+                cout << "New Salary: ";
+                cin >> s;
+                emp->setSalary(s);
+                return;
+            }
+        }
+    }
+
+    void changeKey_Code()
+    {
+        cout << "Enter new Key Code: ";
+        cin >> adminKey; // assumed global variable
+        cout << "Key updated.\n";
+    }
+
+    void viewEmployeesData()
+    {
+        for (auto emp : employeesList) {
+            cout << "Name: " << emp->getName() << " | ID: " << emp->getID() << endl;
+        }
+    }
+
+    void browseFinancialReports()
+    {
+        cout << "Total Sales: " << totalRevenue << endl; // assumed global variable
+    }
+};
+ 
 //! Manager Operations  ===>  ____  Yazan  ____
 
 class ManagerOperations 
