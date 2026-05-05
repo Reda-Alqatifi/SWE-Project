@@ -806,8 +806,6 @@ void printReceipt()
             cout << "book not found"<<'\n';
         }
     }
-            
-        }
 };
 
 ////////////////////////
