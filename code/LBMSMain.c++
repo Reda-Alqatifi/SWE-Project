@@ -404,8 +404,6 @@ class BooksPublicOperations
         //! to chose by whitch way you want to search , caller is:  name  or code
         void searchBooks(const string &caller)
         {
-void searchBooks(const string &caller)
-{
     if (B.empty())
     {
         cout << "\nno books\n";
