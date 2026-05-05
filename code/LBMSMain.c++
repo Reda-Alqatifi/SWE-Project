@@ -693,29 +693,119 @@ class CustomerOperations : public BooksPublicOperations
         string returnDate;
 
     public:
-        void assignDate(string returndate)
-        {
+       void assignDate(string returndate)
+    {
+        returnDate = returndate;
+    }
+        
+void borrow()
+    {
+        int code;
+        cout << "Enter Book Code:";
+        cin >> code;
 
+        Books* book = pointers.findByCode(B, code);
+
+        if (!book)
+        {
+            cout << "book not found"<<'\n';
+            return;
         }
 
-        void borrow()
-        {
+        BorrowedBooks* b = new BorrowedBooks();
 
+        b->set_title(book->get_title());
+        b->set_code(book->get_code());
+        b->set_author(book->get_author());
+        b->set_section(book->get_section());
+        b->set_price(book->get_price());
+
+        cout << "Enter return date:";
+        cin >> returnDate;
+
+        b->returnDate = returnDate;
+
+        B_borrowed.push_back(b);
+
+        cout << "borrowed successfully"<<'\n';
+    }
+        
+    void purchase()
+    {
+        if (!currentCustomer) return;
+
+        int code;
+        cout << "Enter Book Code to Purchase:";
+        cin >> code;
+
+        Books* book = pointers.findByCode(B, code);
+
+        if (!book)
+        {
+            cout << "\n Book not found"<<'\n';
+            return;
         }
 
-        void purchase()
-        {
+        PurchasedBooks* purchased = new PurchasedBooks();
 
+        purchased->set_title(book->get_title());
+        purchased->set_code(book->get_code());
+        purchased->set_author(book->get_author());
+        purchased->set_section(book->get_section());
+        purchased->set_price(book->get_price());
+
+        currentCustomer->add_Purchased(purchased);
+
+        cout << "\n Book purchased successfully"<<'\n';
+
+        printReceipt();
         }
 
-        void printReceipt()
-        {
+void printReceipt()
+    {
+        if (!currentCustomer) return;
 
+        auto& books = currentCustomer->getPurchasedBooks();
+
+        if (books.empty())
+        {
+            cout << "\n no purchased books"<<'\n';
+            return;
         }
 
-        void returnBook()
-        {
+        cout << "\n========== RECEIPT =========="<<'\n';
 
+        double total = 0;
+
+        for (auto book : books)
+        {
+            cout << book->get_title()
+                 << " - " << book->get_price() <<'\n';
+
+            total += book->get_price();
+        }
+
+        cout << "-----------------------------"<<'\n';
+        cout << "Total: " << total << '\n';
+        cout << "============================="<<'\n';
+        }
+
+    void returnBook()
+    {
+        int code;
+        cout << "> Enter Book Code: ";
+        cin >> code;
+
+        if (pointers.removeByCode(B_borrowed, code))
+        {
+            cout << "returned successfully"<<'\n';
+        }
+        else
+        {
+            cout << "book not found"<<'\n';
+        }
+    }
+            
         }
 };
 
