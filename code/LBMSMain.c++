@@ -443,7 +443,7 @@ class BooksPublicOperations
 
     cout << "book not found\n";
 }
-        }
+        
 
         //! to chose who is the user , caller is:  customer  or employee
         void browseBorrowedBooks(const string &caller)
