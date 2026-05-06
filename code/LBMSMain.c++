@@ -1,6 +1,5 @@
 #include <iostream>
 #include <iomanip>
-#include <algorithm>
 #include <string>
 #include <list>
 
@@ -24,9 +23,10 @@ class ManagerOperations;
 //TODO - >>>>>>>>>     Classes Implementation
 
 
-//! GeneralFunctions struct, it is a struc that contains a very helpful functions
-struct GeneralFunctions
+//! GeneralFunctions class, it is a class that contains a very helpful functions
+class GeneralFunctions
 {
+public:
     //! Handeling Errors function - (not same data type imput)
     void handleErrors(int &choice)
     {
@@ -41,8 +41,19 @@ struct GeneralFunctions
         }
     }
 
+    //! Users displaying header
+    void printUserssHeader()
+    {
+        cout << endl;
+        printLine(63 , '=');
+        cout << left << "| " << setw(20) << left << "Name"
+            << "| " << setw(5) << left << "Age"
+            << "| " << setw(30) << left << "Email" << " |\n";
+           printLine(63 , '=');
+    }
+
     //! To change the input case int Lower (small letters), very important in Searching
-    void lowerCase(string &word)//* changes the orginal value
+    string lowerCase(string word)//* returns the new value
     {
         //! to make it Lower
         for (size_t Lower = 0 ; Lower < word.length() ; Lower++) 
@@ -52,6 +63,7 @@ struct GeneralFunctions
                 word[Lower] = word[Lower] + ('a' - 'A');
             }
         }
+        return word;
     }
 
     //! to print a line from char you want
@@ -81,7 +93,42 @@ struct GeneralFunctions
 
         return string(leftSpace , ' ') + text + string(rightSpace , ' ');
     }
+
+    //! to give us the month name depending on its number
+    string monthName(int month)
+    {
+        switch (month)
+        {
+            case 1:  
+                return "January";
+            case 2:  
+                return "February";
+            case 3:  
+                return "March";
+            case 4:  
+                return "April";
+            case 5:  
+                return "May";
+            case 6:  
+                return "June";
+            case 7:  
+                return "July";
+            case 8:  
+                return "August";
+            case 9:  
+                return "September";
+            case 10: 
+                return "October";
+            case 11: 
+                return "November";
+            case 12: 
+                return "December";
+            default: 
+                return "Invalid Month";
+        }
+    }
 };
+GeneralFunctions general;
 
 //! Pointers_Handling class, it is a class that contains a very helpful functions for poniters
 class Pointers_Handling
@@ -94,7 +141,7 @@ class Pointers_Handling
         {
             for (T* ptr : lst)
             {
-                if (ptr != nullptr && ptr->get_email() == email)
+                if (ptr != nullptr && general.lowerCase(ptr->get_email()) == email)
                     return ptr;
             }
             return nullptr;
@@ -115,7 +162,7 @@ class Pointers_Handling
             {
                 if (*temp != nullptr && (*temp)->get_email() == email)
                 {
-                    delete temp;
+                    delete *temp;
                     lst.erase(temp);
                     return true;
                 }
@@ -146,6 +193,16 @@ class Pointers_Handling
         }
 
         //! Print all Users in a list
+        template<typename T>
+        void printUsersMethod(T* ptr)
+        {
+            cout << left
+                << "| " << setw(20)  << (ptr->get_name().length() > 20 ? 
+                ptr->get_name().substr(0, 17) + "..." : ptr->get_name())
+                << "| " << setw(5) << ptr->get_age()
+                << "| " << setw(30) << (ptr->get_email().length() > 20 ? 
+                ptr->get_email().substr(0, 27) + "..." : ptr->get_email()) << " |" << endl;   
+        }
 
         template<typename T>
         void printUsers(list<T*> &lst)
@@ -160,17 +217,29 @@ class Pointers_Handling
             {
                 if (ptr == nullptr) 
                     continue;
-                cout << left
-                    << setw(20)  << (ptr->get_name().length() > 20 ? 
-                    ptr->get_name().substr(0, 17) + "..." : ptr->get_name())
-                    << setw(4) << ptr->get_age()
-                    << setw(30) << (ptr->get_email().length() > 20 ? 
-                    ptr->get_email().substr(0, 17) + "..." : ptr->get_email());
-
-                    cout << endl;
+                printUsersMethod(ptr);
             }
         }
 
+        template<typename T>
+        void printSalary(list<T*> &lst)
+        {
+            if (lst.empty())
+            {
+                cout << "\n> No users found in this list.\n" << endl;
+                return;
+            }
+
+            for (T* ptr : lst)
+            {
+                if (ptr == nullptr) 
+                    continue;
+                cout << left
+                << "| " << setw(20)  << (ptr->get_name().length() > 20 ? 
+                ptr->get_name().substr(0, 17) + "..." : ptr->get_name())
+                << "| " << setw(5) << ptr->get_salary() << " |" << endl;
+            }
+        }
 
         /////////////////////////////////
 
@@ -193,7 +262,7 @@ class Pointers_Handling
         {
             for (T* ptr : lst)
             {
-                if (ptr != nullptr && ptr->get_title() == title)
+                if (ptr != nullptr && general.lowerCase(ptr->get_title()) == title)
                     return ptr;
             }
             return nullptr;
@@ -237,6 +306,19 @@ class Pointers_Handling
 
         //! Print all books in a list
         template<typename T>
+        void printBooksMethod(T* ptr)
+        {
+            cout << left
+                << "| "<< setw(10)  << ptr->get_code()
+                << "| "<< setw(20) << (ptr->get_title().length() > 20 ? 
+                ptr->get_title().substr(0, 17) + "..." : ptr->get_title())
+                << "| "<< setw(20) << (ptr->get_author().length() > 20 ? 
+                ptr->get_author().substr(0, 17) + "..." : ptr->get_author())
+                << "| "<< setw(15) << ptr->get_section()
+                << "| "<< setw(10) << fixed << setprecision(2) << ptr->get_price() << "| \n";
+        }
+        
+        template<typename T>
         void printBooks(list<T*> &lst)
         {
             if (lst.empty())
@@ -249,35 +331,32 @@ class Pointers_Handling
             {
                 if (ptr == nullptr) 
                     continue;
-                cout << left
-                    << setw(10)  << ptr->get_code()
-                    << setw(20) << (ptr->get_title().length() > 20 ? 
-                    ptr->get_title().substr(0, 17) + "..." : ptr->get_title())
-                    << setw(20) << (ptr->get_author().length() > 20 ? 
-                    ptr->get_author().substr(0, 17) + "..." : ptr->get_author())
-                    << setw(15) << ptr->get_section()
-                    << setw(10) << fixed << setprecision(2) << ptr->get_price() << endl;
+                printBooksMethod(ptr);
             }
         }
 };
 
 ///////////////////////
 
-//! Globa Variables / Objects:
+//TODO - Globa Variables / Objects:
 
-int EMP_key_code = 999;
-int MNG_key_code = 777;
+int EMP_key_code = 999; //! Very Important
+int MNG_key_code = 777; //! Very Important
 
-GeneralFunctions general;
+const int YEAR = 2026;
+
 Pointers_Handling pointers;
 
+//* Lists of Actors
 list<User*> users;
-
 list<Customer*> customers;
-
 list<Employee*> employees;
-
 list<Manager*> managers;
+
+//* Lists of Books
+list<Books*> allBooks;
+list<BorrowedBooks*> allBorrowedBooks;
+list<PurchasedBooks*> allPurchasedBooks;
 
 ///////////////////////
 
@@ -359,8 +438,17 @@ class PurchasedBooks : public Books
 
 class BorrowedBooks : public Books 
 {
-    public:
+    private:
         string returnDate;
+    public:
+        void setReturnDate(string returnDate)
+        {
+            this->returnDate = returnDate;
+        }
+        string getReturnDate()
+        {
+            return this->returnDate;
+        } 
 };
 
 ////////////////////////
@@ -372,42 +460,81 @@ class BorrowedBooks : public Books
 
 class BooksPublicOperations 
 {
-    protected:
-        list<Books*> B;
-        list<BorrowedBooks*> B_borrowed;
-        list<PurchasedBooks*> B_purchased;
-
     public:
         //! virtual Destructor to destroy all books
         virtual ~BooksPublicOperations()
         {
-            pointers.freeList(B_borrowed);
-            pointers.freeList(B_purchased);
-            pointers.freeList(B);
+            
         }
 
+        //! Print table header for books
+        void printBooksHeader()
+        {
+            cout << endl;
+            general.printLine(86 , '=');
+            cout << "| " << setw(10) << left << "Code"
+                << "| " << setw(20) << left << "Title"
+                << "| " << setw(20) << left << "Author"
+                << "| " << setw(15) << left << "Section"
+                << "| " << setw(10)  << left << "Price" << "|\n";
+            general.printLine(86 , '=');
+        }
         void browseBooks()
         {
-
+            printBooksHeader();
+            pointers.printBooks(allBooks);
+            general.printLine(86 , '=');
         }
 
-        //! to chose by whitch way you want to search , caller is:  name  or code
+        //! to chose by whitch way you want to search , caller is:  title  or code
         void searchBooks(const string &caller)
         {
+            Books* found = nullptr;
+            if (caller == "code")
+            {
+                int code;
+                cout << "\n enter book code: ";
+                cin >> code;
+                found = pointers.findByCode(allBooks , code);
 
+                if (!found)
+                {
+                    cout << "book not found"<<'\n';
+                    return;
+                }
+            }
+            else
+            {
+                string title;
+                cout << "\n enter book title: ";
+                cin.ignore();
+                getline(cin , title);
+
+                title = general.lowerCase(title);
+
+                found = pointers.findByTitle(allBooks , title);
+
+                if (!found)
+                {
+                    cout << "book not found"<<'\n';
+                    return;
+                }
+            }
+
+            printBooksHeader();
+            pointers.printBooksMethod(found);
+            general.printLine(91 , '=');
+            if (caller == "code")
+                general.pause("");
+            else
+                general.pause("getline");
         }
 
-        //! to chose who is the user , caller is:  customer  or employee
-        void browseBorrowedBooks(const string &caller)
-        {
+        //! to chose who is the user , caller is:  customer  or employee, the 2nd par only for customer
+        void browseBorrowedBooks(const string &caller , Customer* c);
 
-        }
-
-        //! to chose who is the user , caller is:  customer  or employee
-        void browsePurchasedBooks(const string &caller)
-        {
-
-        }
+        //! to chose who is the user , caller is:  customer  or employee, the 2nd par only for customer
+        void browsePurchasedBooks(const string &caller , Customer* c);
 
         //////////////////////
 
@@ -442,8 +569,8 @@ class BooksPublicOperations
             cout<<"\n> Enter your choice : ";
         }
 
-        //! to chose who is the user , caller is:  customer  or employee
-        void browseBooksMenuChoice(const string &caller)
+        //! to chose who is the user , caller is:  customer  or employee, the 2nd par only for customer
+        void browseBooksMenuChoice(const string &caller , Customer* c)
         {
             int choice = 0;
 
@@ -461,11 +588,18 @@ class BooksPublicOperations
                         break;
                     
                     case 2: //! Purchased Books
-                        browsePurchasedBooks(caller);
+                        if (caller == "customer")
+                            browsePurchasedBooks(caller , c);
+                        else
+                            browsePurchasedBooks(caller , nullptr);
+                        
                         break;
 
                     case 3: //! Borrowed Books
-                        browseBorrowedBooks(caller);
+                        if (caller == "customer")
+                            browseBorrowedBooks(caller , c);
+                        else
+                            browseBorrowedBooks(caller , nullptr);
                         break;
 
                     case 4: //! Back to main menu
@@ -477,6 +611,7 @@ class BooksPublicOperations
                         break;
                 }
 
+                general.pause("");
                 general.printLine(50 , '-'); //! print a Line between each option
 
             } while (choice != 4);
@@ -492,7 +627,7 @@ class BooksPublicOperations
             general.printLine(60 , '-');
 
             cout<<"| "<<setw(57)<<left<<"1 - Search by Code."<<"|"<<endl;
-            cout<<"| "<<setw(57)<<left<<"2 - Search by Name."<<"|"<<endl;
+            cout<<"| "<<setw(57)<<left<<"2 - Search by Title."<<"|"<<endl;
             cout<<"| "<<setw(57)<<left<<"3 - Back to The Main Menu."<<"|"<<endl;
 
             general.printLine(60 , '=');
@@ -518,8 +653,8 @@ class BooksPublicOperations
                         searchBooks("code");
                         break;
                     
-                    case 2: //! search by name
-                        searchBooks("name");
+                    case 2: //! search by title
+                        searchBooks("title");
                         break;
 
                     case 3: //! Back to main menu
@@ -546,22 +681,140 @@ class EmployeeOperations : public BooksPublicOperations
     public:
         void AddBooks()
         {
+            Books* newBook = new Books();
+            int code;
+            string title, author, section;
+            double price;
+
+            cout << "\n> Enter Book Code: ";
+            cin >> code;
+            general.handleErrors(code);
+
+            if (pointers.codeExists(allBooks, code)) {
+                cout << "This book code already exists!\n";
+                delete newBook;
+                return;
+            }
+
+            newBook->set_code(code);
+
+            cout << "> Enter Book Title: ";
+            cin.ignore();
+            getline(cin, title);
+            newBook->set_title(title);
+
+            cout << "> Enter Book Author: ";
+            getline(cin, author);
+            newBook->set_author(author);
+
+            cout << "> Enter Book Section: ";
+            getline(cin, section);
+            newBook->set_section(section);
+
+            cout << "> Enter Book Price: ";
+            cin >> price;
+            newBook->set_price(price);
+
+            pointers.addBookInList(allBooks, newBook);
+            cout << "\nBook added successfully!\n";
 
         }
 
         void DeleteBooks()
         {
+            int code;
+            cout << "\n> Enter Book Code to delete: ";
+            cin >> code;
+            general.handleErrors(code);
 
+            if (pointers.removeByCode(allBooks, code)) {
+                cout << "\nBook deleted successfully!\n";
+            } else {
+                cout << "\nBook not found!\n";
+            }
         }
 
         void UpdateBooks()
         {
+            int code;
+            cout << "\n> Enter Book Code to update: ";
+            cin >> code;
+            general.handleErrors(code);
+
+            Books* bookToUpdate = pointers.findByCode(allBooks, code);
+            if (bookToUpdate == nullptr) {
+                cout << "\nBook not found!\n";
+                return;
+            }
+
+            string title, author, section;
+            double price;
+            int choice;
+            do
+            {
+                
+                cout << "\nWhich one do you want to update (write a number)?" << endl;
+                cout << "1- Title." << endl;
+                cout << "2- Author." << endl;
+                cout << "3- Section." << endl;
+                cout << "4- Price." << endl;
+                cout << "5- Exit." << endl;
+
+                cout << "\n> Enter Your Choice: ";
+                cin >> choice;
+                general.handleErrors(choice);
+
+                switch (choice)
+                {
+                    case 1:
+                        cout << "> Enter New Book Title: ";
+                        cin.ignore();
+                        getline(cin, title);
+                        bookToUpdate->set_title(title);
+                        break;
+
+                    case 2:
+                        cout << "> Enter New Book Author: ";
+                        cin.ignore();
+                        getline(cin, author);
+                        bookToUpdate->set_author(author);
+                        break;
+
+                    case 3:
+                        cout << "> Enter New Book Section: ";
+                        cin.ignore();
+                        getline(cin, section);
+                        bookToUpdate->set_section(section);
+                        break;
+
+                    case 4:
+                        cout << "> Enter New Book Price: ";
+                        cin >> price;
+                        bookToUpdate->set_price(price);
+                        break;
+
+                    case 5:
+                        return;
+                    
+                    default:
+                        cout<<"\n* Wrong Entry! please try again!\n"<<endl;
+                        break;
+                }
+
+                cout << "\nBook updated successfully!\n";
+                general.printLine(50 , '-');
+            } while (choice != 5);
 
         }
 
         void browseCustomersData()
         {
-
+            cout << "\n";
+            general.printLine(50, '-');
+            cout << "Customers Data:\n";
+            general.printUserssHeader();
+            pointers.printUsers(customers);
+            general.printLine(63 , '=');
         }
 
         ///////////////////////
@@ -632,48 +885,37 @@ class EmployeeOperations : public BooksPublicOperations
 
 class CustomerOperations : public BooksPublicOperations 
 {
-    private:
-        string returnDate;
-
     public:
-        void assignDate(string returndate)
-        {
+        //! 1st par for PurchasedBooks , 2nd par for BorrowedBooks
+        void printReceipt(PurchasedBooks* purchased , BorrowedBooks* borrowed)
+        {;
+            cout << "\n" << string(39, '=') << " RECEIPT " << string(39, '=') << '\n';
+            
+            printBooksHeader();
 
+            if (!borrowed) 
+                pointers.printBooksMethod(purchased);
+
+            else if (!purchased)
+                pointers.printBooksMethod(borrowed);
+
+            general.printLine(86 , '=');
+
+            general.printLine(86 , '-');
+            if (!borrowed)
+                cout<<"| Total: $ "<< general.centerText(to_string(purchased->get_price()) , 84) << " |\n";
+            else if (!purchased)
+                cout << "| Return Date : " << general.centerText(borrowed->getReturnDate() , 84) << " |\n";
+            general.printLine(86 , '=');
+
+            general.pause("");
         }
 
-        void borrow()
-        {
+        void borrow(Customer* currentCustomer);
 
-        }
+        void purchase(Customer* currentCustomer);
 
-        void purchase()
-        {
-
-        }
-
-        void printReceipt()
-        {
-
-        }
-
-        void returnBook()
-        {
-
-        }
-};
-
-////////////////////////
-
-//! Manager Operations  ===>  ____  Yazan  ____
-
-class ManagerOperations 
-{
-    public:
-        void deleteEmployee(Employee* emp); 
-        void editSalary();
-        void changeKey_Code();
-        void viewEmployeesData();
-        void browseFinancialReports();
+        void returnBook(Customer* currentCustomer);
 };
 
 ////////////////////////
@@ -871,7 +1113,7 @@ class Customer : public User {
         list<BorrowedBooks*> customerBorrowedBooks;
 
     public:
-        //! add books to customers inventory
+        //! add books to customers inventory (setters)
         void add_Purchased(PurchasedBooks* book)
         {
             pointers.addBookInList(customerPurchasedBooks, book);
@@ -879,6 +1121,16 @@ class Customer : public User {
         void add_Borrowed(BorrowedBooks* book)
         {
             pointers.addBookInList(customerBorrowedBooks, book);
+        }
+
+        //! getters
+        list<PurchasedBooks*>& getPurchasedBooks() 
+        {
+            return customerPurchasedBooks;
+        }
+        list<BorrowedBooks*>& getBorrowedBooks() 
+        {
+            return customerBorrowedBooks;
         }
 
         //! Remove books from customer's inventory
@@ -972,7 +1224,7 @@ class Customer : public User {
                 switch (choice)
                 {
                     case 1: //! Browse Books
-                        CustomerOp.browseBooksMenuChoice("customer");
+                        CustomerOp.browseBooksMenuChoice("customer" , this);
                         break;
                     
                     case 2: //! Search Books
@@ -980,15 +1232,15 @@ class Customer : public User {
                         break;
                     
                     case 3: //! Borrow a Book
-                        CustomerOp.borrow();
+                        CustomerOp.borrow(this);
                         break;
 
                     case 4: //! Purchase a Book
-                        CustomerOp.purchase();
+                        CustomerOp.purchase(this);
                         break;
 
                     case 5: //! return a Book
-                        CustomerOp.returnBook();
+                        CustomerOp.returnBook(this);
                         break;
 
                     case 6: //! Log out
@@ -1005,6 +1257,146 @@ class Customer : public User {
             } while (choice != 6);
         }  
 };
+
+///////////////////////
+
+void BooksPublicOperations::browseBorrowedBooks(const string &caller, Customer* c)
+{
+    printBooksHeader();
+    if (caller == "customer")
+        pointers.printBooks(c->getBorrowedBooks());                
+    else
+        pointers.printBooks(allBorrowedBooks);
+
+    general.printLine(86 , '=');
+}
+
+void BooksPublicOperations::browsePurchasedBooks(const string &caller, Customer* c)
+{
+    printBooksHeader();
+    if (caller == "customer")
+        pointers.printBooks(c->getPurchasedBooks());                
+    else
+        pointers.printBooks(allPurchasedBooks);
+
+    general.printLine(86 , '=');
+}
+
+void CustomerOperations::borrow(Customer* currentCustomer)
+{
+    if (!currentCustomer) return;
+    
+    cout << "\nBooks We have:\n";
+
+    browseBooks();
+
+    int code;
+    cout << "Enter Book Code:";
+    cin >> code;
+
+    Books* book = pointers.findByCode(allBooks, code);
+
+    if (!book)
+    {
+        cout << "book not found"<<'\n';
+        return;
+    }
+
+    BorrowedBooks* b = new BorrowedBooks();
+
+    b->set_title(book->get_title());
+    b->set_code(book->get_code());
+    b->set_author(book->get_author());
+    b->set_section(book->get_section());
+    b->set_price(book->get_price());
+
+    int month , day;
+
+    cout << "Enter return date\n";
+    //! month
+    do
+    {
+        cout << "> Month No: "; cin >> month;
+
+        if (month < 1 || month > 12)
+            cout << "This month is incorrect. Pleaes, Try Again!" << endl;
+            
+    } while (month < 1 || month > 12);
+    
+    //! day
+    do
+    {
+        cout << "> Day No: "; cin >> day;
+
+        if (day < 1 || day > 30)
+            cout << "This day is incorrect. Pleaes, Try Again!" << endl;
+            
+    } while (day < 1 || day > 30);
+
+    b->setReturnDate((to_string(day) + " / " + general.monthName(month) + " / " + to_string(YEAR)));
+
+    pointers.addBookInList(allBorrowedBooks , b);
+    currentCustomer->add_Borrowed(b);
+
+    cout << "borrowed successfully"<<'\n';
+    printReceipt(nullptr , b);
+}
+
+void CustomerOperations::purchase(Customer* currentCustomer)
+{
+    if (!currentCustomer) return;
+
+    cout << "\nBooks We have:\n";
+
+    browseBooks();
+
+    int code;
+    cout << "Enter Book Code to Purchase:";
+    cin >> code;
+
+    Books* book = pointers.findByCode(allBooks, code);
+
+    if (!book)
+    {
+        cout << "\n Book not found"<<'\n';
+        return;
+    }
+
+    PurchasedBooks* purchased = new PurchasedBooks();
+
+    purchased->set_title(book->get_title());
+    purchased->set_code(book->get_code());
+    purchased->set_author(book->get_author());
+    purchased->set_section(book->get_section());
+    purchased->set_price(book->get_price());
+
+    pointers.addBookInList(allPurchasedBooks , purchased);
+    currentCustomer->add_Purchased(purchased);
+
+    cout << "\n Book purchased successfully"<<'\n';
+    printReceipt(purchased , nullptr);
+}
+
+void CustomerOperations::returnBook(Customer* currentCustomer)
+{
+    if (!currentCustomer) return;
+    
+    cout << "\nMy Borrowed Books:\n";
+
+    browseBorrowedBooks("customer" , currentCustomer);
+    
+    int code;
+    cout << "> Enter Book Code: ";
+    cin >> code;
+
+    bool removedFromGlobal   = pointers.removeByCode(allBorrowedBooks, code);
+    bool removedFromCustomer = pointers.removeByCode(currentCustomer->getBorrowedBooks(), code);
+
+    if (removedFromGlobal && removedFromCustomer)
+        cout << "Book returned successfully" << '\n';
+    else
+        cout << "book not found"<<'\n';
+}
 
 ////////////////////////
 
@@ -1142,19 +1534,19 @@ class Employee : public User {
                 switch (choice)
                 {
                     case 1: //! Browse Books
-                        
+                        employeeOp.browseBooksMenuChoice("employee" , nullptr);
                         break;
                     
                     case 2: //! Search Books
-                        
+                        employeeOp.searchBooksMenuChoice();
                         break;
                     
                     case 3: //! Manage Books
-                        
+                        employeeOp.manageBooksMenuChoice();
                         break;
 
                     case 4: //! Veiw Customers Info
-                        
+                        employeeOp.browseCustomersData();
                         break;
 
                     case 5: //! Log out
@@ -1172,7 +1564,289 @@ class Employee : public User {
         }
 };
 
+
 ////////////////////////
+
+
+//! Manager Operations  ===>  ____  Yazan  ____
+
+class ManagerOperations : public EmployeeOperations
+{
+    public:
+        void deleteEmployee()
+        {
+            string email;
+            cout << "\n> Enter the email of the employee to delete: ";
+            cin >> email;
+
+            Employee* target = pointers.findByEmail(employees, email);
+            if (!target) {
+                cout << "\n> No employee found with this email.\n";
+                return;
+            } 
+            else {
+                char confirm;
+                cout << "\n> Are you sure you want to delete employee " << target->get_name() 
+                     << "? (Y/N): ";
+                cin >> confirm;
+                if (confirm == 'Y' || confirm == 'y')
+                {
+                    pointers.removeByEmail(employees, email);
+                    cout << "\n> Employee deleted successfully.\n";
+                }
+                else
+                    cout << "\n> Deletion canceled.\n";
+            }
+        }
+
+        void editSalary()
+        {
+            string email;
+
+            cout << "\n Employees Data: ";
+            viewEmployeesData();
+
+            cout << "\n Employees Salaries: ";
+            cout << endl;
+            general.printLine(38 , '=');
+            cout << left << "| " << setw(20) << left << "Name"
+            << "| " << setw(5) << left << "Salary" << " |\n";
+            general.printLine(38 , '=');
+
+            pointers.printSalary(employees);
+
+            general.printLine(38 , '=');
+
+            cout << "\n> Enter the email of the employee to edit salary: ";
+            cin >> email;
+
+            Employee* emp = pointers.findByEmail(employees, email);
+            if (emp == nullptr)
+            {
+                cout << "\n> No employee found with this email.\n";
+                return;
+            }
+
+            double newSalary;
+            cout << "\n> Enter the new salary: ";
+            cin >> newSalary;
+
+            if (emp->set_salary(newSalary))
+                cout << "\n> Salary updated successfully.\n";
+            else
+                cout << "\n> Invalid salary. Must be between 2000 and 1,000,000.\n";
+        }
+
+        void changeKey_Code()
+        {
+            int choice;
+            do
+            {
+                cout << "1 - Change Employees Key_Code." << endl;
+                cout << "2 - Change Manager Key_Code." << endl;
+                cout << "3 - Exit." << endl;
+                
+                cout << "\nEnter Your Choice: ";
+                cin >> choice;
+
+                switch (choice)
+                {
+                    case 1:
+                        cout << "\n> Enter the new Employee Key_Code: ";
+                        cin >> EMP_key_code;
+                        cout << "\n> Employee Key_Code updated successfully.\n";
+                        return;
+
+                    case 2:
+                        cout << "\n> Enter the new Manager Key_Code: ";
+                        cin >> MNG_key_code;
+                        cout << "\n> Manager Key_Code updated successfully.\n";
+                        return;
+                        
+                    case 3:
+                        return;
+
+                    default:
+                    cout << "Wrong Entry, please try again!\n";
+                        break;
+                }
+            } while (choice != 3);
+            
+        }
+
+        void viewEmployeesData()
+        {
+            cout << "\n";
+            general.printLine(50, '-');
+            cout << "Customers Data:\n";
+            general.printUserssHeader();
+            pointers.printUsers(employees);
+            general.printLine(63 , '=');
+        }
+
+        void browseFinancialReports()
+        {
+            cout << "\n";
+            general.printLine(60, '=');
+            cout << "|" << general.centerText("Financial Reports", 58) << "|\n";
+            general.printLine(60, '=');
+
+            //! Purchased Books Report
+            double totalRevenue = 0.0;
+            cout << "\n> Purchased Books:\n";
+            general.printLine(86, '-');
+
+            if (allPurchasedBooks.empty())
+                cout << "  No purchased books.\n";
+            else
+            {
+                printBooksHeader();
+                for (PurchasedBooks* pb : allPurchasedBooks)
+                {
+                    if (pb == nullptr) 
+                        continue;
+                    pointers.printBooksMethod(pb);
+                    totalRevenue += pb->get_price();
+                }
+            }
+
+            general.printLine(86, '-');
+            cout << "| Total Purchased: " << allPurchasedBooks.size() << " books\n";
+            cout << fixed << setprecision(2);
+            cout << "| Total Revenue  : $ " << totalRevenue << "\n";
+            general.printLine(86, '=');
+
+            //! Borrowed Books Report 
+            cout << "\n> Borrowed Books:\n";
+            general.printLine(86, '-');
+
+            if (allBorrowedBooks.empty())
+                cout << "  No borrowed books.\n";
+            else
+            {
+                printBooksHeader();
+                for (BorrowedBooks* bb : allBorrowedBooks)
+                {
+                    if (bb == nullptr) continue;
+                    pointers.printBooksMethod(bb);
+                    cout << "|  Return Date: " << bb->getReturnDate() << "\n";
+                    general.printLine(86, '-');
+                }
+            }
+
+            cout << "| Total Borrowed : " << allBorrowedBooks.size() << " books\n";
+            general.printLine(86, '=');
+
+            //! Salaries Report
+            double totalSalaries = 0.0;
+            cout << "\n> Employees Salaries:\n";
+            general.printLine(40, '-');
+            cout << "| " << setw(20) << left << "Name" << "| " << setw(12) << left << "Salary" << "|\n";
+            general.printLine(40, '-');
+
+            if (employees.empty())
+                cout << "  No employees.\n";
+            else
+            {
+                for (Employee* emp : employees)
+                {
+                    if (emp == nullptr) continue;
+                    cout << "| " << setw(20) << left
+                        << (emp->get_name().length() > 20 ?
+                            emp->get_name().substr(0, 17) + "..." : emp->get_name())
+                        << "| $ " << setw(9) << left << fixed << setprecision(2)
+                        << emp->get_salary() << "|\n";
+                    totalSalaries += emp->get_salary();
+                }
+            }
+
+            general.printLine(40, '-');
+            cout << "| Total Salaries : $ " << totalSalaries << "\n";
+            general.printLine(40, '=');
+
+            //! Net Summary 
+            cout << "\n> Net Summary:\n";
+            general.printLine(40, '=');
+            cout << "| " << setw(20) << left << "Total Revenue" << "| $ " << setw(9) 
+                 << totalRevenue   << "|\n";
+            cout << "| " << setw(20) << left << "Total Salaries" << "| $ " << setw(9) 
+                 << totalSalaries  << "|\n";
+            general.printLine(40, '-');
+            cout << "| " << setw(20) << left << "Net Profit" << "| $ " << setw(9) 
+                 << (totalRevenue - totalSalaries) << "|\n";
+            general.printLine(40, '=');
+
+            general.pause("");
+        }
+
+        void ManageEMPmenu()
+        {
+            cout<<endl;
+            general.printLine(60 , '=');
+            cout<<"|"<<general.centerText("Manages Employees", 58)<<"|"<<endl;
+            general.printLine(60 , '-');
+
+            cout<<"| "<<setw(57)<<left<<"1 - View Employees Data."<<"|"<<endl;
+            cout<<"| "<<setw(57)<<left<<"2 - Change Key_Code."<<"|"<<endl;
+            cout<<"| "<<setw(57)<<left<<"3 - Edit Employees Salaries. "<<"|"<<endl;
+            cout<<"| "<<setw(57)<<left<<"4 - Delete Employee. "<<"|"<<endl;
+            cout<<"| "<<setw(57)<<left<<"5 - Exit. "<<"|"<<endl;
+
+            general.printLine(60 , '=');
+
+            /////////////////////////////////////
+
+            cout<<"\n> Enter your choice : ";
+        }
+        void ManageEMPMenuChoice()
+        {
+            int choice = 0;
+
+            do
+            {
+                ManageEMPmenu();
+                cin>>choice;
+
+                general.handleErrors(choice);
+
+                switch (choice)
+                {
+                    case 1: //! View Employees Data
+                        viewEmployeesData();
+                        break;
+                    
+                    case 2: //! change Key_Code
+                        changeKey_Code();
+                        break;
+
+                    case 3: //! edit Salary
+                        editSalary();
+                        break;
+                    
+                    case 4: //! delete Employee
+                        deleteEmployee();
+                        break;
+
+                    case 5: //! Exit
+                        general.printLine(50 , '-');
+                        return;
+
+                    default:
+                        cout<<"\n* Wrong Entry! please try again!\n"<<endl;
+                        break;
+                }
+
+                general.printLine(50 , '-'); //! print a Line between each option
+
+            } while (choice != 3);
+            
+        }
+
+};
+
+
+////////////////////////////
+
 
 //! Manager ===>  ____  Reda  ____
 
@@ -1216,27 +1890,27 @@ class Manager : public Employee {
                 switch (choice)
                 {
                     case 1: //! Browse Books
-                        
+                        managerOp.browseBooksMenuChoice("employee" , nullptr);
                         break;
                     
                     case 2: //! Search Books
-                        
+                        managerOp.searchBooksMenuChoice();
                         break;
                     
                     case 3: //! Manage Books
-                        
+                        managerOp.manageBooksMenuChoice();
                         break;
 
                     case 4: //! Veiw Customers Info
-                        
+                        managerOp.browseCustomersData();
                         break;
 
                     case 5: //! Employees
-                        
+                        managerOp.ManageEMPMenuChoice();
                         break;
 
                     case 6: //! Veiw Financial Reports
-                        
+                        managerOp.browseFinancialReports();
                         break;
 
                     case 7: //! Log out
@@ -1441,6 +2115,9 @@ int main()
     pointers.freeList(users);
 
 
+    pointers.freeList(allBorrowedBooks);
+    pointers.freeList(allPurchasedBooks);
+    pointers.freeList(allBooks);
 
     return 0;
 }
